@@ -1,0 +1,17 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  margin-top: 10px;
+}
+
+.logo {
+  cursor: pointer;
+  size: "40";
+}
+
+.avatar {
+  cursor: pointer;
+  size: "large";
+}

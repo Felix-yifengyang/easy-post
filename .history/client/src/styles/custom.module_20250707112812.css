@@ -1,0 +1,15 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  margin-top: 10px;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.avatar {
+  cursor: pointer;
+}
