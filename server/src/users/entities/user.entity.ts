@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  DeleteDateColumn,
 } from 'typeorm';
 import { Post } from '../../posts/entities/post.entity';
 
@@ -22,17 +23,38 @@ export class User {
   @Column({ unique: true, length: 100 })
   email: string;
 
-  @Column({ type: 'varchar', name: 'first_name', length: 50, nullable: true })
-  firstName: string | null;
+  @Column({ unique: true, length: 20 })
+  phone: string;
 
-  @Column({ type: 'varchar', name: 'last_name', length: 50, nullable: true })
-  lastName: string | null;
+  @Column({ nullable: true })
+  realName: string;
+
+  @Column({ nullable: true })
+  idCard: string;
+
+  @Column({ nullable: true })
+  avatar: string;
+
+  @Column({ type: 'enum', enum: ['0', '1'], nullable: true })
+  gender: string;
+
+  @Column({ nullable: true })
+  birthDate: Date;
+
+  @Column({ type: 'text', nullable: true })
+  bio: string;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
+  lastLoginAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt: Date;
 
   @OneToMany(() => Post, (post) => post.author)
   posts: Post[];

@@ -11,12 +11,12 @@ export class AuthService {
   ) {}
 
   async login(
-    username: string,
+    identifier: string,
     pass: string,
   ): Promise<{ access_token: string }> {
-    const user = await this.usersService.findForAuth(username);
+    const user = await this.usersService.findForAuthByIdentifier(identifier);
     if (!user || !(await bcrypt.compare(pass, user.password))) {
-      throw new UnauthorizedException('用户名或密码错误');
+      throw new UnauthorizedException('用户名/邮箱/手机号或密码错误');
     }
     const payload = {
       sub: user.id.toString(),

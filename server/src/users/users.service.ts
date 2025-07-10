@@ -36,8 +36,14 @@ export class UsersService {
     return user ? this.toResponseDto(user) : null;
   }
 
-  async findForAuth(username: string): Promise<User | null> {
-    return this.usersRepository.findOne({ where: { username } });
+  async findForAuthByIdentifier(identifier: string): Promise<User | null> {
+    return this.usersRepository.findOne({
+      where: [
+        { username: identifier },
+        { email: identifier },
+        { phone: identifier },
+      ],
+    });
   }
 
   async findProfileById(id: number): Promise<UserProfileDto | null> {

@@ -14,7 +14,7 @@ import { PostsModule } from './posts/posts.module';
       port: 3306,
       username: 'root',
       password: 'dtwxjzh123',
-      database: 'nestjs_demo',
+      database: 'easy_post',
       entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
