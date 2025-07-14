@@ -1,52 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchUserProfile } from '../../api/users.model';
 import UserInfoCard from './userInfoCard';
 import UserPostsList from './userPostsList';
-
-interface UserProfile {
-  id: number;
-  username: string;
-  email: string;
-  createdAt: string;
-  posts: {
-    id: number;
-    title: string;
-    content: string;
-    authorId: number;
-    createdAt: string;
-    updatedAt: string;
-  }[];
-}
+import { useUserStore } from '../../stores/userStore';
 
 export default function ProfilePage() {
-  const [profile, setProfile] = useState<UserProfile | null>(null);
   const navigate = useNavigate();
+  const { user, loading, error, fetchUser } = useUserStore();
 
   useEffect(() => {
-    const loadProfile = async () => {
-      try {
-        const { data } = await fetchUserProfile();
-        setProfile(data);
-      } catch (err) {
-        console.error('Error fetching user profile:', err);
-        navigate('/login');
-      }
-    };
-    loadProfile();
-  }, [navigate]);
+    fetchUser();
+  }, [fetchUser]);
 
-  if (!profile) return <div>Loading...</div>;
+  useEffect(() => {
+    if (error) {
+      navigate('/login');
+    }
+  }, [error, navigate]);
+
+  if (loading || !user) return <div>Loading...</div>;
 
   return (
     <div className="max-w-2xl mx-auto mt-8">
       <UserInfoCard
-        id={profile.id}
-        username={profile.username}
-        email={profile.email}
-        createdAt={profile.createdAt}
+        id={user.id}
+        username={user.username}
+        email={user.email}
+        createdAt={user.createdAt}
       />
-      <UserPostsList posts={profile.posts} />
+      <UserPostsList posts={user.posts || []} />
     </div>
   );
 }
