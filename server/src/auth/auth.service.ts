@@ -15,7 +15,11 @@ export class AuthService {
     pass: string,
   ): Promise<{ access_token: string }> {
     const user = await this.usersService.findForAuthByIdentifier(identifier);
-    if (!user || !(await bcrypt.compare(pass, user.password))) {
+    if (!user) {
+      throw new UnauthorizedException('用户不存在');
+    }
+    const isMatch = await bcrypt.compare(pass, user.password);
+    if (!isMatch) {
       throw new UnauthorizedException('用户名/邮箱/手机号或密码错误');
     }
     const payload = {

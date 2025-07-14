@@ -16,8 +16,7 @@ request.interceptors.request.use((config) => {
 request.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      alert('请重新登录！');
+    if (error.response?.status === 401 && !window.location.pathname.startsWith('/login')) {
       window.location.href = '/login';
     }
     return Promise.reject(error);

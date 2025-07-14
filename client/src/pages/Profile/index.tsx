@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchUserProfile } from '../../api/users';
+import { fetchUserProfile } from '../../api/users.model';
 import UserInfoCard from './userInfoCard';
 import UserPostsList from './userPostsList';
 
