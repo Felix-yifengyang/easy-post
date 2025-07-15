@@ -1,17 +1,12 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar } from 'antd';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import header from '../../../styles/components/layout/header.module.css';
 import { useUserStore } from '../../../stores/userStore';
 
 export default function Header() {
   const navigate = useNavigate();
-  const { user, loading, fetchUser } = useUserStore();
-
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+  const { user, loading } = useUserStore();
 
   return (
     <header className={header.header}>

@@ -6,11 +6,13 @@ import { useUserStore } from '../../stores/userStore';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-  const { user, loading, error, fetchUser } = useUserStore();
+  const { user, loading, error, fetchUser, initialized } = useUserStore();
 
   useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+    if (!initialized && !loading) {
+      fetchUser();
+    }
+  }, [fetchUser, initialized, loading]);
 
   useEffect(() => {
     if (error) {

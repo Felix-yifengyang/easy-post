@@ -2,6 +2,7 @@ import { Button, Form, Input } from 'antd'
 import { useReactive } from 'ahooks'
 import { useNavigate } from 'react-router-dom'
 import { login } from '../../api/auth.model'
+import { useUserStore } from '../../stores/userStore'
 import '../../styles/login/form.css'
 import { LockOutlined, MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons'
 import { createUser } from '../../api/users.model'
@@ -36,6 +37,8 @@ export default function LoginForm() {
       } else {
         const tokenData = await login(values as LoginValues);
         localStorage.setItem('token', tokenData.access_token);
+        useUserStore.setState({ initialized: false });
+        await useUserStore.getState().fetchUser();
         navigate('/profile');
       }
     } catch (e) {
