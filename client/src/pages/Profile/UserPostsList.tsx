@@ -1,4 +1,5 @@
 import { Divider, List } from 'antd';
+import list from '../../styles/profile/userPostsList.module.css';
 
 interface Post {
   id: number;
@@ -25,7 +26,7 @@ export default function UserPostsList({ posts }: UserPostsListProps) {
               title={post.title}
               description={post.content}
             />
-            <div className="text-gray-400 text-sm">
+            <div className={list.postDate}>
               {new Date(post.createdAt).toLocaleString()}
             </div>
           </List.Item>
