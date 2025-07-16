@@ -23,6 +23,7 @@ interface UserStore {
   error: string | null;
   initialized: boolean;
   fetchUser: () => Promise<void>;
+  logout: () => void;
 }
 
 export const useUserStore = create<UserStore>((set, get) => ({
@@ -46,5 +47,15 @@ export const useUserStore = create<UserStore>((set, get) => ({
         initialized: true
       });
     }
+  },
+  
+  logout: () => {
+    set({
+      user: null,
+      loading: false,
+      error: null,
+      initialized: false,
+    });
+    localStorage.removeItem('token');
   },
 }));
