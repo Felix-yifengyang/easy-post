@@ -1,5 +1,5 @@
 import { Avatar, Card } from 'antd';
-import card from '../../styles/profile/userInfoCard.module.css';
+import cardStyles from '../../styles/profile/userInfoCard.module.css';
 
 interface UserInfoCardProps {
   id: number;
@@ -16,13 +16,13 @@ export default function UserInfoCard({
 }: UserInfoCardProps) {
   return (
     <Card>
-      <div className={card.container}>
-        <Avatar size={64} className={card.avatar}>
+      <div className={cardStyles.container}>
+        <Avatar size={64} className={cardStyles.avatar}>
           {username.charAt(0).toUpperCase()}
         </Avatar>
-        <div className={card.userInfo}>
-          <h1 className={card.username}>{username}</h1>
-          <p className={card.email}>{email}</p>
+        <div className={cardStyles.userInfo}>
+          <h1 className={cardStyles.username}>{username}</h1>
+          <p className={cardStyles.email}>{email}</p>
           <p>Joined: {new Date(createdAt).toLocaleString()}</p>
           <p>uid: {id}</p>
         </div>

@@ -3,7 +3,7 @@ import { useReactive } from 'ahooks'
 import { useNavigate } from 'react-router-dom'
 import { login } from '../../api/auth.model'
 import { useUserStore } from '../../stores/userStore'
-import '../../styles/login/form.css'
+import formStyles from '../../styles/login/form.module.css'
 import { LockOutlined, MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons'
 import { createUser } from '../../api/users.model'
 
@@ -59,13 +59,13 @@ export default function LoginForm() {
       form={form} 
       onFinish={onFinish} 
       initialValues={{ identifier: '', password: '' }} 
-      className={`login-form ${state.isRegister ? 'register-mode' : ''}`}
+      className={`${formStyles['login-form']} ${state.isRegister ? formStyles['register-mode'] : ''}`}
     >
       {!state.isRegister ? (
         <>
           <Form.Item 
             name="identifier" 
-            className="form-item"
+            className={formStyles['form-item']}
             rules={[{ required: true, message: '请输入用户名/邮箱/手机号' }]}
           >
             <Input 
@@ -75,7 +75,7 @@ export default function LoginForm() {
           </Form.Item>
           <Form.Item 
             name="password" 
-            className="form-item"
+            className={formStyles['form-item']}
             rules={[{ required: true, message: '请输入密码' }]}
           >
             <Input.Password 
@@ -88,7 +88,7 @@ export default function LoginForm() {
         <>
           <Form.Item
             name="username"
-            className="form-item"
+            className={formStyles['form-item']}
             rules={[
               { required: true, message: '请输入用户名' },
               { min: 4, message: '用户名至少4个字符' }
@@ -98,7 +98,7 @@ export default function LoginForm() {
           </Form.Item>
           <Form.Item
             name="email"
-            className="form-item"
+            className={formStyles['form-item']}
             rules={[
               { required: true, message: '请输入邮箱' },
               { type: 'email', message: '请输入有效的邮箱地址' }
@@ -108,7 +108,7 @@ export default function LoginForm() {
           </Form.Item>
           <Form.Item
             name="phone"
-            className="form-item"
+            className={formStyles['form-item']}
             rules={[
               { required: true, message: '请输入手机号' },
               { 
@@ -121,7 +121,7 @@ export default function LoginForm() {
           </Form.Item>
           <Form.Item
             name="password"
-            className="form-item"
+            className={formStyles['form-item']}
             rules={[
               { required: true, message: '请输入密码' },
               { min: 6, message: '密码至少6个字符' }
@@ -131,7 +131,7 @@ export default function LoginForm() {
           </Form.Item>
           <Form.Item
             name="confirmPassword"
-            className="form-item"
+            className={formStyles['form-item']}
             dependencies={['password']}
             rules={[
               { required: true, message: '请确认密码' },
@@ -149,7 +149,7 @@ export default function LoginForm() {
           </Form.Item>
         </>
       )}
-      <Button loading={state.loading} type="primary" htmlType="submit" className="login-button">
+      <Button loading={state.loading} type="primary" htmlType="submit" className={formStyles['login-button']}>
         {state.isRegister ? '注册' : '登录'}
       </Button>
       <div style={{ textAlign: 'center', marginTop: 8 }}>

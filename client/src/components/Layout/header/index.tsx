@@ -1,7 +1,7 @@
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Dropdown, type MenuProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import header from '../../../styles/components/layout/header.module.css';
+import headerStyles from '../../../styles/components/layout/header.module.css';
 import { useUserStore } from '../../../stores/userStore';
 
 export default function Header() {
@@ -24,8 +24,8 @@ export default function Header() {
   ]
 
   return (
-    <header className={header.header}>
-      <div className={header.avatarWrapper} onClick={() => navigate('/')}>
+    <header className={headerStyles.header}>
+      <div className={headerStyles.avatarWrapper} onClick={() => navigate('/')}>
         <Avatar 
           size={50}
           src={<img src={"/easy_icon.svg"} alt="home" />}
@@ -38,7 +38,7 @@ export default function Header() {
               size={50}
               src={user?.avatar}
               onClick={() => navigate('/profile')}
-              className={header.avatar}
+              className={headerStyles.avatar}
             >
               {!user?.avatar && user?.username?.charAt(0).toUpperCase()}
             </Avatar>
@@ -47,7 +47,7 @@ export default function Header() {
           <Avatar 
             size={50}
             onClick={() => navigate('/login')}
-            className={header.avatar}
+            className={headerStyles.avatar}
             icon={<UserOutlined />}
           />
         )

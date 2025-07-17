@@ -1,14 +1,14 @@
 import LoginForm from "./form";
-import '../../styles/login/login.css';
+import loginStyles from '../../styles/login/login.module.css';
 
 export default function LoginPage() {
     return (
-      <div className="login-page-container">
-        <div className="login-label-container">
-          <div className="login-icon-container">
+      <div className={loginStyles['login-page-container']}>
+        <div className={loginStyles['login-label-container']}>
+          <div className={loginStyles['login-icon-container']}>
             <img 
               src="/easy_icon.svg"
-              className="login-icon" 
+              className={loginStyles['login-icon']} 
               alt="easy-post" 
             />
             <h1>EasyPost</h1>
