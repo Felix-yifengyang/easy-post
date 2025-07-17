@@ -28,7 +28,7 @@ export default function Header() {
       <div className={header.avatarWrapper} onClick={() => navigate('/')}>
         <Avatar 
           size={50}
-          src={<img src={"/src/pages/login/src/easy_icon.png"} alt="home" />}
+          src={<img src={"/easy_icon.svg"} alt="home" />}
         />
       </div>
       {!loading && (

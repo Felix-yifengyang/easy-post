@@ -7,7 +7,7 @@ export default function LoginPage() {
         <div className="login-label-container">
           <div className="login-icon-container">
             <img 
-              src="/src/pages/login/src/easy_icon.png" 
+              src="/easy_icon.svg"
               className="login-icon" 
               alt="easy-post" 
             />
