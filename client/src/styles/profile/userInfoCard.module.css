@@ -2,6 +2,17 @@
   display: flex;
   align-items: center;
   margin-bottom: 24px;
+  position: relative;
+  background: 
+    url('/card/bird.svg') left 375px bottom 135px/ 30px no-repeat,
+    url('/card/tree.svg') left 200px bottom 60px/ 150px no-repeat,
+    url('/card/tree2.svg') left 300px bottom 60px/ 150px no-repeat,
+    url('/card/deer.svg') left 1250px bottom 10px/ 100px no-repeat,
+    url('/card/flamingo.svg') left 1000px bottom 10px/ 100px no-repeat,
+    url('/card/fox.svg') left 750px bottom 10px/ 100px no-repeat,
+    url('/card/grassland.svg') center/cover no-repeat;
+  padding: 20px;
+  border-radius: 8px;
 }
 
 .avatar {

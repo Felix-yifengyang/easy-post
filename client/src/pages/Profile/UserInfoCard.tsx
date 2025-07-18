@@ -1,4 +1,4 @@
-import { Avatar, Card } from 'antd';
+import { Avatar } from 'antd';
 import cardStyles from '../../styles/profile/userInfoCard.module.css';
 
 interface UserInfoCardProps {
@@ -15,8 +15,8 @@ export default function UserInfoCard({
   createdAt,
 }: UserInfoCardProps) {
   return (
-    <Card>
-      <div className={cardStyles.container}>
+    <div className={cardStyles.container}>
+      <div className={cardStyles.content}>
         <Avatar size={64} className={cardStyles.avatar}>
           {username.charAt(0).toUpperCase()}
         </Avatar>
@@ -27,6 +27,6 @@ export default function UserInfoCard({
           <p>uid: {id}</p>
         </div>
       </div>
-    </Card>
+    </div>
   );
 }
