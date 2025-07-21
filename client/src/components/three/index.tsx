@@ -33,58 +33,32 @@ export function Model() {
     directionalLight.shadow.mapSize.height = 2048;
     scene.add(directionalLight);
 
-    // 创建FBX加载器
+    // 创建FBX加载器并加载teapot模型
     const fbxLoader = new FBXLoader();
-
-    // 加载所有模型
-    const modelPaths = [
-      'models/skeleton/CyberFish/CyberFishAnim.FBX',
-      'models/skeleton/CyberFly/CyberFlyAnim.FBX',
-      'models/skeleton/Robot01/Robot01Anim.FBX',
-      'models/skeleton/Robot02/Robot02_Anim.FBX',
-      'models/skeleton/Robot03/Robot3Anim.FBX',
-      'models/skeleton/SiverAnt/SilverAnt01.FBX'
-    ];
-
-    const modelScales = [0.1, 0.1, 0.03, 0.03, 0.05, 0.01];
-    const modelPositions = [
-      new THREE.Vector3(-75, 5, -5),
-      new THREE.Vector3(75, 5, -5),
-      new THREE.Vector3(-100, -50, 5),
-      new THREE.Vector3(100, -5, 5),
-      new THREE.Vector3(-100, 10, 0),
-      new THREE.Vector3(35, -10, 0)
-    ];
-
-    modelPaths.forEach((path, index) => {
-      fbxLoader.load(path, (fbx) => {
-        fbx.scale.setScalar(modelScales[index]);
-        fbx.position.copy(modelPositions[index]);
-        scene.add(fbx);
-        
-        // 播放动画
-        if (fbx.animations.length > 0) {
-          const mixer = new THREE.AnimationMixer(fbx);
-          const action = mixer.clipAction(fbx.animations[0]);
-          action.play();
-          
-          // 存储mixer用于动画更新
-          mixers.push(mixer);
-        }
-      }, undefined, (error) => {
-        console.error(`Failed to load model ${path}:`, error);
-      });
-    });
-
-    // 存储动画mixers
     const mixers: THREE.AnimationMixer[] = [];
+    
+    fbxLoader.load('models/teapot.FBX', (teapot) => {
+      teapot.scale.setScalar(0.1);
+      teapot.position.set(0, 0, 0);
+      scene.add(teapot);
+      
+      // 播放动画
+      if (teapot.animations.length > 0) {
+        const mixer = new THREE.AnimationMixer(teapot);
+        const action = mixer.clipAction(teapot.animations[0]);
+        action.play();
+        mixers.push(mixer);
+      }
+    }, undefined, (error) => {
+      console.error('Failed to load teapot model:', error);
+    });
     
     // 动画循环
     const clock = new THREE.Clock();
     const animate = () => {
       requestAnimationFrame(animate);
       
-      // 更新所有动画
+      // 更新动画
       const delta = clock.getDelta();
       mixers.forEach(mixer => mixer.update(delta));
       
