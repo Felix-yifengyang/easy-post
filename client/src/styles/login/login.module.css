@@ -5,7 +5,10 @@
 }
 
 body {
-  background: rgba(252,209,219,255);
+  background-image: url('../../assets/card/night.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .login-page-container {
@@ -41,4 +44,12 @@ body {
 .login-icon-container p {
   margin-top: 12px;
   margin-bottom: 40px;
+}
+
+h1 {
+  color: #fff;
+}
+
+p {
+  color: #fff;
 }

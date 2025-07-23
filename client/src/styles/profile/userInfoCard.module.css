@@ -4,13 +4,37 @@
   margin-bottom: 24px;
   position: relative;
   background: 
-    url('/card/bird.svg') left 375px bottom 135px/ 30px no-repeat,
-    url('/card/tree.svg') left 200px bottom 60px/ 150px no-repeat,
-    url('/card/tree2.svg') left 300px bottom 60px/ 150px no-repeat,
-    url('/card/deer.svg') left 1250px bottom 10px/ 100px no-repeat,
-    url('/card/flamingo.svg') left 1000px bottom 10px/ 100px no-repeat,
-    url('/card/fox.svg') left 750px bottom 10px/ 100px no-repeat,
-    url('/card/grassland.svg') center/cover no-repeat;
+  url('../../assets/card/forest.svg') left 1230px bottom 120px/ 50px no-repeat,
+  url('../../assets/card/forest.svg') left 1260px bottom 120px/ 50px no-repeat,
+  url('../../assets/card/forest.svg') left 1290px bottom 120px/ 50px no-repeat,
+  url('../../assets/card/forest.svg') left 1320px bottom 120px/ 50px no-repeat,
+  url('../../assets/card/forest.svg') left 1350px bottom 120px/ 50px no-repeat,
+  url('../../assets/card/forest.svg') left 1380px bottom 120px/ 50px no-repeat,
+  url('../../assets/card/forest.svg') left 1410px bottom 120px/ 50px no-repeat,
+  url('../../assets/card/forest.svg') left 1440px bottom 120px/ 50px no-repeat,
+  url('../../assets/card/forest.svg') left 1470px bottom 120px/ 50px no-repeat,
+  url('../../assets/card/forest.svg') left 1500px bottom 120px/ 50px no-repeat,
+  url('../../assets/card/bird.svg') left 350px bottom 135px/ 20px no-repeat,
+  url('../../assets/card/fox.svg') left 250px bottom 80px/ 50px no-repeat,
+  url('../../assets/card/tree.svg') left 280px bottom 95px/ 120px no-repeat,
+  url('../../assets/card/tree2.svg') left 320px bottom 105px/ 110px no-repeat,
+  url('../../assets/card/tree.svg') left -20px bottom 100px/ 110px no-repeat,
+  url('../../assets/card/tree2.svg') left 20px bottom 90px/ 125px no-repeat,
+  url('../../assets/card/tree.svg') left 40px bottom 110px/ 95px no-repeat,
+  url('../../assets/card/tree.svg') left 60px bottom 85px/ 130px no-repeat,
+  url('../../assets/card/tree.svg') left 80px bottom 105px/ 100px no-repeat,
+  url('../../assets/card/tree2.svg') left 100px bottom 95px/ 115px no-repeat,
+  url('../../assets/card/tree.svg') left 120px bottom 115px/ 90px no-repeat,
+  url('../../assets/card/tree.svg') left 140px bottom 85px/ 130px no-repeat,
+  url('../../assets/card/tree.svg') left 160px bottom 100px/ 110px no-repeat,
+  url('../../assets/card/tree2.svg') left 180px bottom 90px/ 125px no-repeat,
+  url('../../assets/card/tree.svg') left 200px bottom 110px/ 95px no-repeat,
+  url('../../assets/card/tree2.svg') left 220px bottom 85px/ 130px no-repeat,
+  url('../../assets/card/tree.svg') left 240px bottom 105px/ 100px no-repeat,
+  url('../../assets/card/tree2.svg') left 260px bottom 95px/ 115px no-repeat,
+  url('../../assets/card/deer.svg') left 800px bottom 60px/ 150px no-repeat,
+  url('../../assets/card/flamingo.svg') left 1000px bottom 100px/ 70px no-repeat,
+  url('../../assets/card/grassland.svg') center/cover no-repeat;
   padding: 20px;
   border-radius: 8px;
 }

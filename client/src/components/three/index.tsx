@@ -33,7 +33,7 @@ export function Model() {
     labelRenderer.domElement.style.pointerEvents = 'none';
     container.appendChild(labelRenderer.domElement);
 
-    new GLTFLoader().load('models/flowertest.glb', (gltf) => {
+new GLTFLoader().load('/src/assets/models/flowertest.glb', (gltf) => {
         const model = gltf.scene;
         scene.add(model);
 
