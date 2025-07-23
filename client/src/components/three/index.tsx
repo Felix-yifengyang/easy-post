@@ -2,6 +2,7 @@ import { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 
 export function Model() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -11,6 +12,13 @@ export function Model() {
     if (!container) return;
     
     const scene = new THREE.Scene();
+    // Add lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(1, 1, 1);
+    scene.add(directionalLight);
+
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 2;
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -20,29 +28,29 @@ export function Model() {
     container.appendChild(canvas);
 
     // Create instanced mesh
-    const count = 300;
+    const count = 100;
     const dummy = new THREE.Object3D();
     let instancedMesh: THREE.InstancedMesh | null = null;
-    let flowerGeometry: THREE.BufferGeometry | null = null;
-    let flowerMaterial: THREE.Material | null = null;
+    let modelGeometry: THREE.BufferGeometry | null = null;
+    let modelMaterial: THREE.Material | null = null;
 
-    new GLTFLoader().load('/models/flowertest.glb', (gltf) => {
-      const firstMesh = gltf.scene.children[1] as THREE.Mesh;
-      flowerGeometry = firstMesh.geometry;
-      flowerMaterial = Array.isArray(firstMesh.material) 
+    new GLTFLoader().load('/models/container.glb', (gltf) => {
+      const firstMesh = gltf.scene.children[1].children[0] as THREE.Mesh;
+      const secondMesh = gltf.scene.children[1].children[1] as THREE.Mesh;
+      modelGeometry = BufferGeometryUtils.mergeGeometries([firstMesh.geometry, secondMesh.geometry]);
+      modelMaterial = Array.isArray(firstMesh.material) 
         ? firstMesh.material[0] 
         : firstMesh.material;
-
-      if (!flowerGeometry || !flowerMaterial) return;
+      if (!modelGeometry || !modelMaterial) return;
 
       // Create instanced mesh
-      instancedMesh = new THREE.InstancedMesh(flowerGeometry, flowerMaterial, count);
+      instancedMesh = new THREE.InstancedMesh(modelGeometry, modelMaterial, count);
       instancedMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
       scene.add(instancedMesh);
 
       // Position instances in a grid
       const gridSize = Math.ceil(Math.sqrt(count));
-      const spacing = 0.1;
+      const spacing = 10;
       let index = 0;
       
       for (let x = 0; x < gridSize; x++) {
