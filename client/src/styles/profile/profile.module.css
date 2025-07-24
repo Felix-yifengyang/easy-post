@@ -1,0 +1,12 @@
+.profilePage {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.profilePageLoggedIn {
+  background-color: #ffffff;
+}
+
+.profilePageLoggedOut {
+  background-color: rgba(14,47,93,255);
+}

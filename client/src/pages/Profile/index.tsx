@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import UserInfoCard from './userInfoCard';
 import UserPostsList from './userPostsList';
 import { useUserStore } from '../../stores/userStore';
+import styles from '../../styles/profile/profile.module.css';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function ProfilePage() {
   if (loading || !user) return <div>Loading...</div>;
 
   return (
-    <div className="max-w-2xl mx-auto mt-8">
+    <div className={`${styles.profilePage} ${user ? styles.profilePageLoggedIn : styles.profilePageLoggedOut} max-w-2xl mx-auto mt-8`}>
       <UserInfoCard
         id={user.id}
         username={user.username}
