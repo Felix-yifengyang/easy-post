@@ -1,15 +1,17 @@
 import { useRef, useEffect } from 'react';
+import { Card } from 'antd';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 
 export function Model() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || !cardRef.current) return;
     
     const scene = new THREE.Scene();
     // Add lights
@@ -19,63 +21,96 @@ export function Model() {
     directionalLight.position.set(1, 1, 1);
     scene.add(directionalLight);
 
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 2;
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    const canvas = renderer.domElement;
-    const controls = new OrbitControls(camera, canvas);
+    // Create WebGL renderer
+    const renderer = new THREE.WebGLRenderer({ 
+      antialias: true,
+      alpha: true
+    });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(canvas);
+    
+    // Create wrapper div for both renderers
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+    wrapper.style.width = '100%';
+    wrapper.style.height = '100%';
+    container.appendChild(wrapper);
+    
+    // Add WebGL renderer
+    wrapper.appendChild(renderer.domElement);
+    
+    // Create CSS3D renderer
+    const cssRenderer = new CSS3DRenderer();
+    cssRenderer.setSize(window.innerWidth, window.innerHeight);
+    cssRenderer.domElement.style.position = 'absolute';
+    cssRenderer.domElement.style.top = '0';
+    cssRenderer.domElement.style.pointerEvents = 'none'; // Allow events to pass through
+    wrapper.appendChild(cssRenderer.domElement);
 
-    // Create instanced mesh
-    const count = 100;
-    const dummy = new THREE.Object3D();
-    let instancedMesh: THREE.InstancedMesh | null = null;
-    let modelGeometry: THREE.BufferGeometry | null = null;
-    let modelMaterial: THREE.Material | null = null;
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+    const controls = new OrbitControls(camera, wrapper);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+
+    // Create 3D card
+    
+    const cardObject = new CSS3DObject(cardRef.current);
+    cardObject.position.set(0, 20, 0);
+    cardObject.scale.set(0.1, 0.1, 0.1); // Make card smaller in 3D space
+    scene.add(cardObject);
+
+    let connectingLine: THREE.Line | null = null;
+    let gltfScene: THREE.Group | null = null;
+
+    const animate = () => {
+      requestAnimationFrame(animate);
+      
+      if (gltfScene && connectingLine) {
+        const newModelCenter = new THREE.Box3().setFromObject(gltfScene)
+          .getCenter(new THREE.Vector3());
+        const lineGeometry = connectingLine.geometry;
+        lineGeometry.setFromPoints([
+          newModelCenter,
+          cardObject.position
+        ]);
+        lineGeometry.attributes.position.needsUpdate = true;
+      }
+      
+      controls.update();
+      renderer.render(scene, camera);
+      cssRenderer.render(scene, camera);
+    };
 
     new GLTFLoader().load('/models/container.glb', (gltf) => {
-      const firstMesh = gltf.scene.children[1].children[0] as THREE.Mesh;
-      const secondMesh = gltf.scene.children[1].children[1] as THREE.Mesh;
-      modelGeometry = BufferGeometryUtils.mergeGeometries([firstMesh.geometry, secondMesh.geometry]);
-      modelMaterial = Array.isArray(firstMesh.material) 
-        ? firstMesh.material[0] 
-        : firstMesh.material;
-      if (!modelGeometry || !modelMaterial) return;
-
-      // Create instanced mesh
-      instancedMesh = new THREE.InstancedMesh(modelGeometry, modelMaterial, count);
-      instancedMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-      scene.add(instancedMesh);
-
-      // Position instances in a grid
-      const gridSize = Math.ceil(Math.sqrt(count));
-      const spacing = 10;
-      let index = 0;
+      gltfScene = gltf.scene;
+      scene.add(gltfScene);
       
-      for (let x = 0; x < gridSize; x++) {
-        for (let y = 0; y < gridSize; y++) {
-          if (index >= count) break;
-          
-          dummy.position.set(
-            (x - gridSize/2) * spacing,
-            (y - gridSize/2) * spacing,
-            0
-          );
-          dummy.updateMatrix();
-          instancedMesh.setMatrixAt(index, dummy.matrix);
-          index++;
-        }
-      }
-      instancedMesh.instanceMatrix.needsUpdate = true;
-
-      // Adjust camera position
-      const box = new THREE.Box3().setFromObject(instancedMesh);
+      // Get model position
+      const modelBox = new THREE.Box3().setFromObject(gltf.scene);
+      const modelCenter = modelBox.getCenter(new THREE.Vector3());
+      
+      // Create connecting line
+      const lineGeometry = new THREE.BufferGeometry().setFromPoints([
+        modelCenter,
+        cardObject.position.clone()
+      ]);
+      const lineMaterial = new THREE.LineBasicMaterial({ 
+        color: 0xffffff,
+        linewidth: 2,
+        transparent: true,
+        opacity: 0.7
+      });
+      connectingLine = new THREE.Line(lineGeometry, lineMaterial);
+      scene.add(connectingLine);
+      
+      // Adjust camera to fit all objects
+      const box = new THREE.Box3().setFromObject(gltf.scene);
+      box.expandByObject(cardObject);
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
       
       const maxDim = Math.max(size.x, size.y, size.z);
-      const cameraDistance = maxDim * 0.8;
+      const cameraDistance = maxDim * 1.5;
       
       camera.position.set(
         center.x + cameraDistance * 0.5,
@@ -85,28 +120,27 @@ export function Model() {
       
       controls.target.copy(center);
       controls.update();
-      camera.near = 0.1;
-      camera.far = cameraDistance * 10;
-      camera.updateProjectionMatrix();
-    },
-    undefined,
-    (error) => {
-      console.error('Failed to load model:', error);
-    }
-    );
+    });
 
-    const animate = () => {
-      requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
-    };
     animate();
 
     return () => {
       controls.dispose();
-      container?.removeChild(canvas);
+      container?.removeChild(wrapper);
     };
   }, []);
 
-  return <div ref={containerRef} />;
+  return (
+    <>
+      <div ref={containerRef} style={{ width: '100%', height: '100vh' }} />
+      <div ref={cardRef} style={{ display: 'none' }}>
+        <Card 
+          title="3D Card" 
+          style={{ width: 200 }} // Smaller base size
+        >
+          <p>This card is rendered in 3D space</p>
+        </Card>
+      </div>
+    </>
+  );
 }
